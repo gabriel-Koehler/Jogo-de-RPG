@@ -1,0 +1,22 @@
+2 franco Atirador, moviment 1, distancia do ataque 5
+4 tanques,  moviment 3 distancia do atque
+6 pelotões, moviment 2
+1 avião, a decidir
+
+franco atirador vai poder atacar um turno sim, 
+caso atacou no anterior, e no proximo não poderá
+
+cada turno vai poder atacar, defender, movimentar, e passar a vez
+atacar x
+defender x
+movimentar x
+
+classes
+
+Unidade 
+Jogador
+Partida
+CampoDeBatalha posicao
+
+Jogador 1, aliados
+jogador 2, eixo
