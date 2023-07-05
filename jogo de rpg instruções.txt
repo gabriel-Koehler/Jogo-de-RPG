@@ -1,7 +1,13 @@
-2 franco Atirador, moviment 1, distancia do ataque 5
-4 tanques,  moviment 3 distancia do atque
+2 franco Atirador
+150 de vida ,100 de escudo ,dano 100, rodada sim, rodada não
+4 tanques
+200 de vida ,200 de escudo, 90 de dano
 6 pelotões, moviment 2
+50 de vida, 150 de escudo, 60 de dano
+4 suporte,
+100 de vida, 100 de escudo, 60 de dano
 1 avião, a decidir
+70 de dano em área  2 por 2 a cada 3 ou 4 rodadas
 
 franco atirador vai poder atacar um turno sim, 
 caso atacou no anterior, e no proximo não poderá

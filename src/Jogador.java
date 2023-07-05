@@ -1,12 +1,9 @@
 public class Jogador {
     String lado;
+    int rodada=0;
 
-    Jogador(){
-
-    }
-
-    public void defender(){
-
+    Jogador(String lado){
+        this.lado=lado;
     }
 
 }

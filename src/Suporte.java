@@ -1,15 +1,14 @@
 import java.util.ArrayList;
 
-public class FrancoAtirador extends Unidade{
+public class Suporte extends Unidade {
 
-    boolean atacou=false;
 
-    FrancoAtirador(String lado){
-        super(150,100,100, lado);
+    Suporte( String lado) {
+        super(100,100,60, lado);
     }
 
     @Override
-    public ArrayList<Posicao> movimentos(CampoDeBatalha campoDeBatalha,Posicao posicaoAtual) {
+    public ArrayList<Posicao> movimentos(CampoDeBatalha campoDeBatalha, Posicao posicaoAtual) {
         ArrayList<Posicao> movimentosPossiveis=new ArrayList();
         Posicao[][] campo=campoDeBatalha.getPosicao();
         int x=posicaoAtual.getPosicaoNoCampoDeBatalhaX();
@@ -57,46 +56,32 @@ public class FrancoAtirador extends Unidade{
         Posicao[][] campo=campoDeBatalha.getPosicao();
         int x=posicaoAtual.getPosicaoNoCampoDeBatalhaX();
         int y=posicaoAtual.getPosicaoNoCampoDeBatalhaY();
-
-        //pra cima
-        for (int i=x-3;i<x+3;i++) {
-                if(!campo[y-5][i].getUnidade().getLado().equals(this.getLado())){
-                    ataquesPossiveis.add(campo[y-5][i]);
+        for (int i=y-1;i<y+1;i++){
+            for (int j=x-1;j<x+1;j++){
+                if(!campo[i][j].getUnidade().getLado().equals(this.getLado())){
+                    ataquesPossiveis.add(campo[i][j]);
                 }
             }
-        for (int i=x-2;i<x+2;i++) {
-            if(!campo[y-4][i].getUnidade().getLado().equals(this.getLado())){
-                ataquesPossiveis.add(campo[y-4][i]);
-            }
         }
-        //pra cima
-
-        //pra baixo
-        for (int i=x-3;i<x+3;i++) {
-            if(!campo[y+5][i].getUnidade().getLado().equals(this.getLado())){
-                ataquesPossiveis.add(campo[y+5][i]);
-            }
-        }
-        for (int i=x-2;i<x+2;i++) {
-            if(!campo[y+4][i].getUnidade().getLado().equals(this.getLado())){
-                ataquesPossiveis.add(campo[y+4][i]);
-            }
-        }
-        //pra baixo
-
-        return ataquesPossiveis;
+        return null;
     }
+    public ArrayList<Posicao> upDano(CampoDeBatalha campoDeBatalha, Posicao posicaoAtual) {
+        ArrayList<Posicao> upsPossiveis=new ArrayList();
+        Posicao[][] campo=campoDeBatalha.getPosicao();
+        int x=posicaoAtual.getPosicaoNoCampoDeBatalhaX();
+        int y=posicaoAtual.getPosicaoNoCampoDeBatalhaY();
+        for (int i=y-1;i<y+1;i++){
+            for (int j=x-1;j<x+1;j++){
+                if(campo[i][j].getUnidade().getLado().equals(this.getLado())){
+                    upsPossiveis.add(campo[i][j]);
+                }
+            }
+        }
 
-    public void setAtacou(boolean atacou) {
-        this.atacou = atacou;
+        return null;
     }
-    //    @Override
-//    public void desviar() {
-//
-//    }
     @Override
     public String toString() {
-        return "Atirador";
+        return "Suporte";
     }
-
 }

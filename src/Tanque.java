@@ -1,7 +1,10 @@
 import java.util.ArrayList;
 
-public class tanque extends Unidade{
+public class Tanque extends Unidade{
 
+    Tanque(String lado){
+        super(200,200,90, lado);
+    }
 
     @Override
     public ArrayList<Posicao> movimentos(CampoDeBatalha campoDeBatalha, Posicao posicaoAtual) {
@@ -33,5 +36,10 @@ public class tanque extends Unidade{
             }
         }
         return ataquesPossiveis;
+    }
+
+    @Override
+    public String toString() {
+        return "Tanque";
     }
 }
