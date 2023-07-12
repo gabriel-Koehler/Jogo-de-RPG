@@ -14,8 +14,10 @@ public class Tanque extends Unidade{
         int y=posicaoAtual.getPosicaoNoCampoDeBatalhaY();
         for (int i=y-2;i<y+2;i++){
             for (int j=x-2;j<x+2;j++){
-                if(campo[i][j].getUnidade()==null){
-                    movimentosPossiveis.add(campo[i][j]);
+                if ((i>-1 && j>-1) && (i<12 && j>8)) {
+                    if (campo[i][j].getUnidade() == null) {
+                        movimentosPossiveis.add(campo[i][j]);
+                    }
                 }
             }
         }
@@ -30,8 +32,12 @@ public class Tanque extends Unidade{
         int y=posicaoAtual.getPosicaoNoCampoDeBatalhaY();
         for (int i=y-2;i<y+2;i++){
             for (int j=x-2;j<x+2;j++){
-                if(!campo[i][j].getUnidade().getLado().equals(this.getLado())){
-                    ataquesPossiveis.add(campo[i][j]);
+                if ((i>-1 && j>-1) && (i<12 && j<8)){
+                    if(campo[i][j].getUnidade()!=null){
+                        if(!campo[i][j].getUnidade().getLado().equals(this.getLado())){
+                            ataquesPossiveis.add(campo[i][j]);
+                        }
+                    }
                 }
             }
         }
@@ -40,6 +46,6 @@ public class Tanque extends Unidade{
 
     @Override
     public String toString() {
-        return "Tanque";
+        return "💪";
     }
 }

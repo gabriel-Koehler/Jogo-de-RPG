@@ -11,7 +11,6 @@ public class CampoDeBatalha {
                         posicaos[y][x]==posicaos[1][7]){
                     Unidade unidadeCriada=new Tanque("Aliado");
                     posicaos[y][x]=new Posicao(y,x,unidadeCriada);
-                    posicaos[y][x].setPosicaoNoCampoDeBatalhaX(x);
                 }
                 if(posicaos[y][x]==posicaos[0][0]||
                         posicaos[y][x]==posicaos[0][7]){
@@ -66,6 +65,10 @@ public class CampoDeBatalha {
                     posicaos[y][x]=new Posicao(y,x,unidadeCriada);
                 }
                 //Eixo
+                if(y>1 && y<10){
+                    Unidade unidadeCriada=null;
+                    posicaos[y][x]=new Posicao(y,x,unidadeCriada);
+                }
             }
         }
     }

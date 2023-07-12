@@ -14,14 +14,18 @@ public class Pelotoes extends Unidade{
         int y=posicaoAtual.getPosicaoNoCampoDeBatalhaY();
         if(posicaoAtual.getUnidade().getLado().equals("Aliados")){
         for(int i=x-1;i<i+1;i++){
-            if(campo[y+1][i]==null){
-                movimentosPossiveis.add(campo[y+1][i]);
+            if(y+1<12 && i<8 && i>-1){
+                if(campo[y+1][i]==null){
+                    movimentosPossiveis.add(campo[y+1][i]);
+                }
             }
         }
         }else{
             for(int i=x-1;i<i+1;i++){
-                if(campo[y-1][i]==null){
-                    movimentosPossiveis.add(campo[y-1][i]);
+                if(y+1<12 && i<8 && i>-1) {
+                    if (campo[y - 1][i] == null) {
+                        movimentosPossiveis.add(campo[y - 1][i]);
+                    }
                 }
             }
         }
@@ -36,14 +40,22 @@ public class Pelotoes extends Unidade{
         int y=posicaoAtual.getPosicaoNoCampoDeBatalhaY();
         if(posicaoAtual.getUnidade().getLado().equals("Aliado")){
             for(int i=x-1;i<i+1;i++){
-                if(!campo[y+2][i].getUnidade().getLado().equals(this.getLado())){
-                    ataquesPossiveis.add(campo[y+2][i]);
+                if(y+2<12 && i>-1 && i<8) {
+                    if(campo[y + 2][i].getUnidade()!=null){
+                        if (!campo[y + 2][i].getUnidade().getLado().equals(this.getLado())) {
+                            ataquesPossiveis.add(campo[y + 2][i]);
+                        }
+                    }
                 }
             }
         }else{
             for(int i=x-1;i<i+1;i++){
-                if(!campo[y-2][i].getUnidade().getLado().equals(this.getLado())){
-                    ataquesPossiveis.add(campo[y-2][i]);
+                if(y-2>-1 && i>-1 && i<8) {
+                    if(campo[y - 2][i].getUnidade().getLado()!=null){
+                        if (!campo[y - 2][i].getUnidade().getLado().equals(this.getLado())) {
+                            ataquesPossiveis.add(campo[y - 2][i]);
+                        }
+                    }
                 }
             }
         }
@@ -51,6 +63,6 @@ public class Pelotoes extends Unidade{
     }
     @Override
     public String toString() {
-        return "Pelotões";
+        return "⚔";
     }
 }

@@ -18,34 +18,34 @@ public class FrancoAtirador extends Unidade{
 //        ---> x x x
 //        cima x u x
 //             x x x
-        if(campo[y-1][x].getUnidade()==null){
+        if(campo[y-1][x].getUnidade()==null && y-1>-1){
             movimentosPossiveis.add(campo[y-1][x]);
         }
-        if(campo[y-1][x-1].getUnidade()==null){
+        if(campo[y-1][x-1].getUnidade()==null && (y-1>-1 && x-1>-1)){
             movimentosPossiveis.add(campo[y-1][x-1]);
         }
-        if(campo[y-1][x+1].getUnidade()==null){
+        if(campo[y-1][x+1].getUnidade()==null && (y-1>-1 && x+1<8)){
             movimentosPossiveis.add(campo[y-1][x+1]);
         }
 //        meio x x x
 //         --->x u x
 //             x x x
-        if(campo[y][x-1].getUnidade()==null){
+        if(campo[y][x-1].getUnidade()==null && x-1>-1){
             movimentosPossiveis.add(campo[y][x-1]);
         }
-        if(campo[y][x-1].getUnidade()==null){
+        if(campo[y][x-1].getUnidade()==null && x-1>-1){
             movimentosPossiveis.add(campo[y][x+1]);
         }
 //             x x x
 //       baixo x u x
 //         --->x x x
-        if(campo[y+1][x].getUnidade()==null){
+        if(campo[y+1][x].getUnidade()==null && y+1<12){
             movimentosPossiveis.add(campo[y+1][x]);
         }
-        if(campo[y+1][x-1].getUnidade()==null){
+        if(campo[y+1][x-1].getUnidade()==null && (y+1<12 && x-1>-1)){
             movimentosPossiveis.add(campo[y+1][x-1]);
         }
-        if(campo[y+1][x+1].getUnidade()==null){
+        if(campo[y+1][x+1].getUnidade()==null && (y+1<12 && x+1<8)){
             movimentosPossiveis.add(campo[y+1][x+1]);
         }
         return movimentosPossiveis;
@@ -60,26 +60,42 @@ public class FrancoAtirador extends Unidade{
 
         //pra cima
         for (int i=x-3;i<x+3;i++) {
-                if(!campo[y-5][i].getUnidade().getLado().equals(this.getLado())){
-                    ataquesPossiveis.add(campo[y-5][i]);
+            if ((y - 5 > -1 && i > -1) && ( i < 8)) {
+                if(campo[y - 5][i].getUnidade()!=null){
+                    if (!campo[y - 5][i].getUnidade().getLado().equals(this.getLado())) {
+                        ataquesPossiveis.add(campo[y - 5][i]);
+                    }
                 }
             }
+        }
         for (int i=x-2;i<x+2;i++) {
-            if(!campo[y-4][i].getUnidade().getLado().equals(this.getLado())){
-                ataquesPossiveis.add(campo[y-4][i]);
+            if ((y - 4 > -1 && i > -1) && ( i < 8)) {
+                if(campo[y - 4][i].getUnidade()!=null){
+                    if (!campo[y - 4][i].getUnidade().getLado().equals(this.getLado())) {
+                        ataquesPossiveis.add(campo[y - 4][i]);
+                    }
+                }
             }
         }
         //pra cima
 
         //pra baixo
         for (int i=x-3;i<x+3;i++) {
-            if(!campo[y+5][i].getUnidade().getLado().equals(this.getLado())){
-                ataquesPossiveis.add(campo[y+5][i]);
+            if ((y + 5 < 12 && i > -1) && ( i < 8)) {
+                if(campo[y + 5][i].getUnidade()!=null){
+                    if (!campo[y + 5][i].getUnidade().getLado().equals(this.getLado())) {
+                        ataquesPossiveis.add(campo[y + 5][i]);
+                    }
+                }
             }
         }
         for (int i=x-2;i<x+2;i++) {
-            if(!campo[y+4][i].getUnidade().getLado().equals(this.getLado())){
-                ataquesPossiveis.add(campo[y+4][i]);
+            if ((y +4 < 12 && i > -1) && ( i < 8)) {
+                if(campo[y + 4][i].getUnidade()!=null){
+                    if (!campo[y + 4][i].getUnidade().getLado().equals(this.getLado())) {
+                        ataquesPossiveis.add(campo[y + 4][i]);
+                    }
+                }
             }
         }
         //pra baixo
@@ -96,7 +112,7 @@ public class FrancoAtirador extends Unidade{
 //    }
     @Override
     public String toString() {
-        return "Atirador";
+        return "🏹";
     }
 
 }

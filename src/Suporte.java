@@ -17,34 +17,34 @@ public class Suporte extends Unidade {
 //        ---> x x x
 //        cima x u x
 //             x x x
-        if(campo[y-1][x].getUnidade()==null){
+        if(campo[y-1][x].getUnidade()==null && (y-1)>-1){
             movimentosPossiveis.add(campo[y-1][x]);
         }
-        if(campo[y-1][x-1].getUnidade()==null){
+        if(campo[y-1][x-1].getUnidade()==null && ((y-1)>-1 && (x-1)>-1)){
             movimentosPossiveis.add(campo[y-1][x-1]);
         }
-        if(campo[y-1][x+1].getUnidade()==null){
+        if(campo[y-1][x+1].getUnidade()==null && ((y-1)>-1 && (x+1)<8)){
             movimentosPossiveis.add(campo[y-1][x+1]);
         }
 //        meio x x x
 //         --->x u x
 //             x x x
-        if(campo[y][x-1].getUnidade()==null){
+        if(campo[y][x-1].getUnidade()==null && (x-1)>-1){
             movimentosPossiveis.add(campo[y][x-1]);
         }
-        if(campo[y][x-1].getUnidade()==null){
+        if(campo[y][x+1].getUnidade()==null && (x+1)<8){
             movimentosPossiveis.add(campo[y][x+1]);
         }
 //             x x x
 //       baixo x u x
 //         --->x x x
-        if(campo[y+1][x].getUnidade()==null){
+        if(campo[y+1][x].getUnidade()==null && (y+1)<12){
             movimentosPossiveis.add(campo[y+1][x]);
         }
-        if(campo[y+1][x-1].getUnidade()==null){
+        if(campo[y+1][x-1].getUnidade()==null && ((y+1)<12 && (x-1)>-1)){
             movimentosPossiveis.add(campo[y+1][x-1]);
         }
-        if(campo[y+1][x+1].getUnidade()==null){
+        if(campo[y+1][x+1].getUnidade()==null && ((y+1)<12 && (x+1)<8)){
             movimentosPossiveis.add(campo[y+1][x+1]);
         }
         return movimentosPossiveis;
@@ -56,14 +56,19 @@ public class Suporte extends Unidade {
         Posicao[][] campo=campoDeBatalha.getPosicao();
         int x=posicaoAtual.getPosicaoNoCampoDeBatalhaX();
         int y=posicaoAtual.getPosicaoNoCampoDeBatalhaY();
+
         for (int i=y-1;i<y+1;i++){
             for (int j=x-1;j<x+1;j++){
-                if(!campo[i][j].getUnidade().getLado().equals(this.getLado())){
-                    ataquesPossiveis.add(campo[i][j]);
+                if ((i>-1 && j>-1) && (i<12 && j<8)){ //<--verificação se esta dentro do campo
+                    if(campo[i][j].getUnidade()!=null){
+                        if(!campo[i][j].getUnidade().getLado().equals(this.getLado())){
+                        ataquesPossiveis.add(campo[i][j]);
+                        }
+                    }
                 }
             }
         }
-        return null;
+        return ataquesPossiveis;
     }
     public ArrayList<Posicao> upDano(CampoDeBatalha campoDeBatalha, Posicao posicaoAtual) {
         ArrayList<Posicao> upsPossiveis=new ArrayList();
@@ -72,8 +77,12 @@ public class Suporte extends Unidade {
         int y=posicaoAtual.getPosicaoNoCampoDeBatalhaY();
         for (int i=y-1;i<y+1;i++){
             for (int j=x-1;j<x+1;j++){
-                if(campo[i][j].getUnidade().getLado().equals(this.getLado())){
-                    upsPossiveis.add(campo[i][j]);
+                if((i<12 && i>-1) && (j<8 && j>-1)){
+                    if(campo[i][j].getUnidade()!=null){
+                        if(campo[i][j].getUnidade().getLado().equals(this.getLado())){
+                            upsPossiveis.add(campo[i][j]);
+                        }
+                    }
                 }
             }
         }
@@ -82,6 +91,6 @@ public class Suporte extends Unidade {
     }
     @Override
     public String toString() {
-        return "Suporte";
+        return "⛑";
     }
 }

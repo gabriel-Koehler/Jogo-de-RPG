@@ -24,5 +24,8 @@ Jogador
 Partida
 CampoDeBatalha posicao
 
+defesa
+à apenas uma unidade, 50 de defesa por uma rodada
+
 Jogador 1, aliados
 jogador 2, eixo

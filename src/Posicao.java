@@ -1,7 +1,7 @@
 public class Posicao {
     private int posicaoNoCampoDeBatalhaX;
     private int posicaoNoCampoDeBatalhaY;
-    Unidade unidade;
+    private Unidade unidade;
 
     Posicao(int y,int x,Unidade unidade){
         this.posicaoNoCampoDeBatalhaX=x;
@@ -31,7 +31,6 @@ public class Posicao {
     }
 
     public Unidade getUnidade() {
-
         return unidade;
     }
 }
