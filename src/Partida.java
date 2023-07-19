@@ -14,15 +14,21 @@ public class Partida {
     }
     private void mostrarTabuleiro(){
         for(int i=0;i<12;i++){
-                System.out.println(
-                        this.campo[i][0].getUnidade()+ "|"
-                                + this.campo[i][1].getUnidade() + "|"
-                                + this.campo[i][2].getUnidade() + "|"
-                                + this.campo[i][3].getUnidade() + "|"
-                                + this.campo[i][4].getUnidade() + "|"
-                                + this.campo[i][5].getUnidade() + "|"
-                                + this.campo[i][6].getUnidade() + "|"
-                                + this.campo[i][7].getUnidade());
+              for(int j=0;j<8;j++){
+                  if(j!=7){
+                      if(this.campo[i][j].getUnidade()==null){
+                          System.out.print("◽"+"|");
+                      }else {
+                          System.out.print(this.campo[i][j].getUnidade()+"|");
+                      }
+                  }else if(j==7){
+                      if(this.campo[i][j].getUnidade()==null){
+                          System.out.print("◽"+"\n");
+                      }else {
+                          System.out.print(this.campo[i][j].getUnidade()+"\n");
+                      }
+                  }
+              }
             }
         }
     private ArrayList<Posicao> unidadesJogador(Jogador jogadorAtuando){
@@ -69,7 +75,7 @@ public class Partida {
                 [2]-Movimentar
                 [3]-Defender
                 [4]-Passar a vez
-                O que deseja fazer:""");
+                O que deseja fazer J1:""");
         int opcao= sc.nextInt();
         switch (opcao){
             case 1:
@@ -94,7 +100,7 @@ public class Partida {
                 [2]-Movimentar
                 [3]-Defender
                 [4]-Passar a vez
-                O que deseja fazer:""");
+                O que deseja fazer J2:""");
         int opcao= sc.nextInt();
         switch (opcao){
             case 1:
@@ -121,18 +127,29 @@ public class Partida {
         }
         System.out.println("Indique qual unidade deseja usar: ");
         int posicaoNoArray= sc.nextInt();
-        ArrayList<Posicao> movimentos=posicaos.get(posicaoNoArray-1).getUnidade()
+
+        ArrayList<Posicao> moviment=posicaos.get(posicaoNoArray-1).getUnidade()
                 .movimentos(this.campoDeBatalha,posicaos.get(posicaoNoArray-1));
-        for(Posicao posicao:movimentos){
-            System.out.println(posicao.getPosicaoNoCampoDeBatalhaX()+" e "+posicao.getPosicaoNoCampoDeBatalhaY());
+        System.out.println(moviment);
+        if(moviment.size()!=0){
+
+            for(Posicao posicao:moviment){
+                System.out.println("["+(moviment.indexOf(posicao)+1)+"] - "+
+                        posicao.getPosicaoNoCampoDeBatalhaY()
+                        +" e "
+                        +posicao.getPosicaoNoCampoDeBatalhaX());
+            }
+            System.out.println("Indique qual lugar deseja movimentar : ");
+            int posicaoAAtacar= sc.nextInt();
+            Unidade unidadeUsada=posicaos.get(posicaoNoArray-1).getUnidade();
+            Posicao posicao=moviment.get(posicaoAAtacar-1);
+            posicao.setUnidade(unidadeUsada);
+            posicaos.get(posicaoNoArray-1).setUnidade(null);
+            jogadorAtuando.setAcoes(1);
+
+        }else{
+            System.out.println("Sem possibilidades de movimento para essa unidade");
         }
-        System.out.println("Indique qual lugar deseja movimentar : ");
-        int posicaoAAtacar= sc.nextInt();
-        Unidade unidadeUsada=posicaos.get(posicaoNoArray-1).getUnidade();
-        Posicao posicao=movimentos.get(posicaoAAtacar-1);
-        posicao.setUnidade(unidadeUsada);
-        posicaos.get(posicaoNoArray-1).setUnidade(null);
-        jogadorAtuando.setAcoes(1);
     }
 
     public void atacar(Jogador jogadorAtuando){
@@ -144,19 +161,22 @@ public class Partida {
         int posicaoNoArray= sc.nextInt();
         ArrayList<Posicao> ataques=posicaos.get(posicaoNoArray-1).getUnidade()
                 .ataques(this.campoDeBatalha,posicaos.get(posicaoNoArray-1));
-        if(ataques.size()>0){
-        for(Posicao posicao:ataques){
-            System.out.println(posicao.getUnidade());
-        }
-        System.out.println("Indique qual unidade deseja Atacar: ");
-        int posicaoAAtacar= sc.nextInt();
-        Unidade unidadeUsada=posicaos.get(posicaoNoArray-1).getUnidade();
-        Unidade unidadeAtacada=ataques.get(posicaoAAtacar-1).getUnidade();
-        unidadeAtacada.setDefesa(-(unidadeUsada.getDano()));
-        if(unidadeAtacada.getVida()<=0){
-            ataques.get(posicaoAAtacar-1).setUnidade(null);
-        }
-        jogadorAtuando.setAcoes(2);
+        System.out.println(ataques);
+        if(ataques.size()!=0){
+            for(Posicao posicao:ataques){
+                System.out.println("["+(ataques.indexOf(posicao)+1)+"] - "+posicao.getUnidade());
+            }
+            System.out.println("Indique qual unidade deseja Atacar: ");
+            int posicaoAAtacar= sc.nextInt();
+            Unidade unidadeUsada=posicaos.get(posicaoNoArray-1).getUnidade();
+            Unidade unidadeAtacada=ataques.get(posicaoAAtacar-1).getUnidade();
+            unidadeAtacada.setDefesa(-(unidadeUsada.getDano()));
+            if(unidadeAtacada.getVida()<=0){
+                ataques.get(posicaoAAtacar-1).setUnidade(null);
+            }
+            jogadorAtuando.setAcoes(2);
+        }else{
+            System.out.println("Sem possibilidades de ataque");
         }
 
     }

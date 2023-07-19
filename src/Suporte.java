@@ -17,34 +17,34 @@ public class Suporte extends Unidade {
 //        ---> x x x
 //        cima x u x
 //             x x x
-        if(campo[y-1][x].getUnidade()==null && (y-1)>-1){
+        if((y-1)>-1 && campo[y-1][x].getUnidade()==null ){
             movimentosPossiveis.add(campo[y-1][x]);
         }
-        if(campo[y-1][x-1].getUnidade()==null && ((y-1)>-1 && (x-1)>-1)){
+        if(((y-1)>-1 && (x-1)>-1) &&  campo[y-1][x-1].getUnidade()==null){
             movimentosPossiveis.add(campo[y-1][x-1]);
         }
-        if(campo[y-1][x+1].getUnidade()==null && ((y-1)>-1 && (x+1)<8)){
+        if(((y-1)>-1 && (x+1)<8) && campo[y-1][x+1].getUnidade()==null){
             movimentosPossiveis.add(campo[y-1][x+1]);
         }
 //        meio x x x
 //         --->x u x
 //             x x x
-        if(campo[y][x-1].getUnidade()==null && (x-1)>-1){
+        if((x-1)>-1 && campo[y][x-1].getUnidade()==null){
             movimentosPossiveis.add(campo[y][x-1]);
         }
-        if(campo[y][x+1].getUnidade()==null && (x+1)<8){
+        if((x+1)<8 && campo[y][x+1].getUnidade()==null){
             movimentosPossiveis.add(campo[y][x+1]);
         }
 //             x x x
 //       baixo x u x
 //         --->x x x
-        if(campo[y+1][x].getUnidade()==null && (y+1)<12){
+        if((y+1)<12 && campo[y+1][x].getUnidade()==null){
             movimentosPossiveis.add(campo[y+1][x]);
         }
-        if(campo[y+1][x-1].getUnidade()==null && ((y+1)<12 && (x-1)>-1)){
+        if(((y+1)<12 && (x-1)>-1) && campo[y+1][x-1].getUnidade()==null){
             movimentosPossiveis.add(campo[y+1][x-1]);
         }
-        if(campo[y+1][x+1].getUnidade()==null && ((y+1)<12 && (x+1)<8)){
+        if(((y+1)<12 && (x+1)<8) && campo[y+1][x+1].getUnidade()==null){
             movimentosPossiveis.add(campo[y+1][x+1]);
         }
         return movimentosPossiveis;

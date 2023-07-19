@@ -23,6 +23,6 @@ public class Jogador {
     }
 
     public void setAcoes(int acoes) {
-        this.acoes =+ acoes;
+        this.acoes += acoes;
     }
 }
