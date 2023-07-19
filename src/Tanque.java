@@ -14,7 +14,8 @@ public class Tanque extends Unidade{
         int y=posicaoAtual.getPosicaoNoCampoDeBatalhaY();
         for (int i=y-2;i<y+2;i++){
             for (int j=x-2;j<x+2;j++){
-                if ((i>-1 && j>-1) && (i<12 && j>8)) {
+                if ((i>-1 && j>-1) && (i<12 && j<8)) {
+                System.out.println(campo[i][j].getUnidade());
                     if (campo[i][j].getUnidade() == null) {
                         movimentosPossiveis.add(campo[i][j]);
                     }

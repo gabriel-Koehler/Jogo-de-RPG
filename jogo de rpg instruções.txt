@@ -3,7 +3,7 @@
 4 tanques
 200 de vida ,200 de escudo, 90 de dano
 6 pelotões, moviment 2
-50 de vida, 150 de escudo, 60 de dano
+100 de vida, 100 de escudo, 60 de dano
 4 suporte,
 100 de vida, 100 de escudo, 60 de dano
 1 avião, a decidir

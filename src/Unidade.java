@@ -34,7 +34,7 @@ public abstract class Unidade {
 
     private void setVida(int vida) {
 
-        this.vida =+ vida;
+        this.vida += vida;
     }
 
     public void setDefesa(int defesa) {
@@ -42,12 +42,8 @@ public abstract class Unidade {
             int danosRestante=defesa-this.defesa;
             this.setVida(-danosRestante);
         }else{
-            this.defesa =+ defesa;
+            this.defesa += defesa;
         }
-    }
-
-    public void setDano(int dano) {
-        this.dano = dano;
     }
 
     public String getLado() {

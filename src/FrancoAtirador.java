@@ -2,8 +2,6 @@ import java.util.ArrayList;
 
 public class FrancoAtirador extends Unidade{
 
-    boolean atacou=false;
-
     FrancoAtirador(String lado){
         super(150,100,100, lado);
     }
@@ -103,9 +101,6 @@ public class FrancoAtirador extends Unidade{
         return ataquesPossiveis;
     }
 
-    public void setAtacou(boolean atacou) {
-        this.atacou = atacou;
-    }
     //    @Override
 //    public void desviar() {
 //
