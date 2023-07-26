@@ -31,12 +31,12 @@ public class Partida {
               }
             }
         }
-    private ArrayList<Posicao> unidadesJogador(Jogador jogadorAtuando){
+    private ArrayList<Posicao> unidadesJogador(String lado){
         ArrayList unidades=new ArrayList();
         for(int i=0;i<12;i++){
             for(int j=0;j<8;j++){
                 if (this.campo[i][j].getUnidade()!=null){
-                    if (this.campo[i][j].getUnidade().getLado().equals(jogadorAtuando.getLado())){
+                    if (this.campo[i][j].getUnidade().getLado().equals(lado)){
                         unidades.add(this.campo[i][j]);
                     };
                 }
@@ -67,8 +67,8 @@ public class Partida {
 
         int contTiroJ1=0;
         int contTiroJ2=0;
-        int contAviãoJ1=0;
-        int contAviãoJ2=0;
+        int contAviaoJ1=0;
+        int contAviaoJ2=0;
         int contDefendeuJ1=0;
         int contDefendeuJ2=0;
         int contSuporteJ1=0;
@@ -90,10 +90,49 @@ public class Partida {
                 contTiroJ2=0;
                 jogador2.setJogadorUsouSniper(false);
             }
-            if(){
-
+            if(jogador1.isJogadorDefendeu() && contDefendeuJ1!=2){
+                contDefendeuJ1++;
+            }else if(jogador1.isJogadorDefendeu() && contDefendeuJ1==2){
+                contDefendeuJ1=0;
+                if(jogador1.getValorDefesaInit()==jogador1.getUnidadeDefendida().getDefesa()){
+                    jogador1.getUnidadeDefendida().setDefesa(-50);
+                }
+                jogador1.setJogadorDefendeu(false);
+            }
+            if(jogador2.isJogadorDefendeu() && contDefendeuJ2!=2){
+                contDefendeuJ2++;
+            }else if(jogador2.isJogadorDefendeu() && contDefendeuJ2==2){
+                contDefendeuJ2=0;
+                if(jogador2.getValorDefesaInit()==jogador2.getUnidadeDefendida().getDefesa()){
+                    jogador2.getUnidadeDefendida().setDefesa(-50);
+                }
+                jogador2.setJogadorDefendeu(false);
+            }
+            if(jogador1.isJogadorUsouAviao() && contAviaoJ1!=5){
+                contAviaoJ1++;
+            } else if (jogador1.isJogadorUsouAviao() && contAviaoJ1==5) {
+                contAviaoJ1=0;
+                jogador1.setJogadorUsouAviao(false);
+            }
+            if(jogador2.isJogadorUsouAviao() && contAviaoJ2!=5){
+                contAviaoJ2++;
+            } else if (jogador2.isJogadorUsouAviao() && contAviaoJ2==5) {
+                contAviaoJ2=0;
+                jogador2.setJogadorUsouAviao(false);
             }
 
+            if (jogador1.isJogadorUsouSuporte() && contSuporteJ1!=2){
+                contSuporteJ1++;
+            }else if (jogador1.isJogadorUsouSuporte() && contSuporteJ1==2){
+                contSuporteJ1=0;
+                jogador1.setJogadorUsouSuporte(false);
+            }
+            if (jogador2.isJogadorUsouSuporte() && contSuporteJ2!=2){
+                contSuporteJ2++;
+            }else if (jogador2.isJogadorUsouSuporte() && contSuporteJ2==2){
+                contSuporteJ2=0;
+                jogador2.setJogadorUsouSuporte(false);
+            }
             do {
 
                 display_De_Acoes(jogador1);
@@ -108,8 +147,9 @@ public class Partida {
 
         }while (this.calcVidaTotalJogadores());
     }
+
     public void movimentar(Jogador jogadorAtuando){
-        ArrayList<Posicao> posicaos=this.unidadesJogador(jogadorAtuando);
+        ArrayList<Posicao> posicaos=this.unidadesJogador(jogadorAtuando.getLado());
         for (Posicao posicao:posicaos) {
             if((posicaos.indexOf(posicao)+1)%4==0 &&
                     posicaos.indexOf(posicao)!=0){
@@ -147,7 +187,7 @@ public class Partida {
 
     public void atacar(Jogador jogadorAtuando){
 
-        ArrayList<Posicao> posicaos=this.unidadesJogador(jogadorAtuando);
+        ArrayList<Posicao> posicaos=this.unidadesJogador(jogadorAtuando.getLado());
         for (Posicao posicao:posicaos) {
 
             if((posicaos.indexOf(posicao)+1)%4==0 &&
@@ -176,7 +216,7 @@ public class Partida {
 
     public Unidade defender(Jogador jogadorAtuando){
 
-        ArrayList<Posicao> posicaos=this.unidadesJogador(jogadorAtuando);
+        ArrayList<Posicao> posicaos=this.unidadesJogador(jogadorAtuando.getLado());
 
         for (Posicao posicao:posicaos) {
             System.out.println(posicao.getUnidade());
@@ -194,8 +234,43 @@ public class Partida {
         }
         return null;
     }
-    public void aviao(){
+    public void aviao(Jogador jogadorAtuando){
+        ArrayList<Posicao> locaisAtaque;
+        String lado;
+        if(jogadorAtuando.getLado().equals("Aliado")){
+            lado="Eixo";
+            locaisAtaque=this.unidadesJogador("Eixo");
+        }else{
+            lado="Aliado";
+            locaisAtaque=this.unidadesJogador("Aliado");
+        }
+        for (Posicao posicao:locaisAtaque) {
 
+            if((locaisAtaque.indexOf(posicao)+1)%4==0 &&
+                    locaisAtaque.indexOf(posicao)!=0){
+                System.out.print("["+(locaisAtaque.indexOf(posicao)+1)+"]"+posicao.getUnidade()+"\n");
+            }else{
+                System.out.print("["+(locaisAtaque.indexOf(posicao)+1)+"]"+posicao.getUnidade());
+            }
+
+        }
+        System.out.println("Indique qual unidade deseja usar: ");
+        int posicaoNoArray= sc.nextInt();
+        int x=locaisAtaque.get(posicaoNoArray-1).getPosicaoNoCampoDeBatalhaX();
+        int y=locaisAtaque.get(posicaoNoArray-1).getPosicaoNoCampoDeBatalhaY();
+
+        for (int i=y-1;i<y+1;i++){
+            for (int j=x-1;j<x+1;j++){
+                if((i<12 && i>-1) && (j<8 && j>-1)){
+                    if(campo[i][j].getUnidade()!=null){
+                        if(campo[i][j].getUnidade().getLado().equals(lado)){
+                            campo[i][j].getUnidade().setDefesa(-70);
+                        }
+                    }
+                }
+            }
+        }
+        jogadorAtuando.setJogadorUsouAviao(true);
     }
     private boolean calcVidaTotalJogadores (){
 
@@ -203,14 +278,14 @@ public class Partida {
         int vidaTotalJ2=0;
         ArrayList<Unidade> unidadesJ1=new ArrayList();
 
-        for(Posicao posicao:this.unidadesJogador(this.jogador1)){
+        for(Posicao posicao:this.unidadesJogador(this.jogador1.getLado())){
             unidadesJ1.add(posicao.getUnidade());
         }
         for(Unidade unidade:unidadesJ1){
             vidaTotalJ1+=unidade.getVida();
         }
         ArrayList<Unidade> unidadesJ2=new ArrayList();
-        for(Posicao posicao:this.unidadesJogador(this.jogador2)){
+        for(Posicao posicao:this.unidadesJogador(this.jogador2.getLado())){
             unidadesJ2.add(posicao.getUnidade());
         }
         for(Unidade unidade:unidadesJ2){
@@ -256,30 +331,166 @@ public class Partida {
 
     private void display_De_Acoes(Jogador jogadorAtuando){
         mostrarTabuleiro();
-        System.out.print("""
+        int opcao=0;
+        if (jogadorAtuando.isJogadorUsouAviao() && jogadorAtuando.isJogadorUsouSuporte()) {
+
+            System.out.print("""
                         [1]-Atacar
                         [2]-Movimentar
                         [3]-Defender
                         [4]-Passar a vez
                         O que deseja fazer"""+" "+jogadorAtuando.getLado()+": ");
-        int opcao= sc.nextInt();
-        switch (opcao){
-            case 1:
-                this.atacar(jogadorAtuando);
-                break;
-            case 2:
-                this.movimentar(jogadorAtuando);
-                break;
-            case 3:
-                jogadorAtuando.setUnidadeDefendida(this.defender(jogadorAtuando));
-                if(jogadorAtuando.isJogadorDefendeu()){
-                    jogadorAtuando.setValorDefesaInit(jogadorAtuando.getUnidadeDefendida().getDefesa());
-                }
-                break;
-            case 4:
-                jogadorAtuando.setAcoes(3);
-                break;
+            opcao= sc.nextInt();
+            switch (opcao){
+                case 1:
+                    this.atacar(jogadorAtuando);
+                    break;
+                case 2:
+                    this.movimentar(jogadorAtuando);
+                    break;
+                case 3:
+                    jogadorAtuando.setUnidadeDefendida(this.defender(jogadorAtuando));
+                    if(jogadorAtuando.isJogadorDefendeu()){
+                        jogadorAtuando.setValorDefesaInit(jogadorAtuando.getUnidadeDefendida().getDefesa());
+                        jogadorAtuando.getUnidadeDefendida().addDefesa(50);
+                    }
+                    break;
+                case 4:
+                    jogadorAtuando.setAcoes(3);
+                    break;
+            }
+
+        }else if (!jogadorAtuando.isJogadorUsouAviao() && jogadorAtuando.isJogadorUsouSuporte()){
+
+            System.out.print("""
+                        [1]-Atacar
+                        [2]-Movimentar
+                        [3]-Defender
+                        [4]-Ataque Aéreo
+                        [5]-Passar a vez
+                        O que deseja fazer"""+" "+jogadorAtuando.getLado()+": ");
+            opcao= sc.nextInt();
+            switch (opcao){
+                case 1:
+                    this.atacar(jogadorAtuando);
+                    break;
+                case 2:
+                    this.movimentar(jogadorAtuando);
+                    break;
+                case 3:
+                    jogadorAtuando.setUnidadeDefendida(this.defender(jogadorAtuando));
+                    if(jogadorAtuando.isJogadorDefendeu()){
+                        jogadorAtuando.setValorDefesaInit(jogadorAtuando.getUnidadeDefendida().getDefesa());
+                        jogadorAtuando.getUnidadeDefendida().addDefesa(50);
+                    }
+                    break;
+                case 4:
+                    this.aviao(jogadorAtuando);
+                    break;
+                case 5:
+                    jogadorAtuando.setAcoes(3);
+                    break;
+            }
+
+        } else if (jogadorAtuando.isJogadorUsouAviao() && !jogadorAtuando.isJogadorUsouSuporte()) {
+
+            System.out.print("""
+                        [1]-Atacar
+                        [2]-Movimentar
+                        [3]-Defender
+                        [4]-Suporte
+                        [5]-Passar a vez
+                        O que deseja fazer"""+" "+jogadorAtuando.getLado()+": ");
+            opcao= sc.nextInt();
+            switch (opcao){
+                case 1:
+                    this.atacar(jogadorAtuando);
+                    break;
+                case 2:
+                    this.movimentar(jogadorAtuando);
+                    break;
+                case 3:
+                    jogadorAtuando.setUnidadeDefendida(this.defender(jogadorAtuando));
+                    if(jogadorAtuando.isJogadorDefendeu()){
+                        jogadorAtuando.setValorDefesaInit(jogadorAtuando.getUnidadeDefendida().getDefesa());
+                        jogadorAtuando.getUnidadeDefendida().addDefesa(50);
+                    }
+                    break;
+                case 4:
+                    this.suporte(jogadorAtuando);
+                    break;
+                case 5:
+                    jogadorAtuando.setAcoes(3);
+                    break;
+            }
+
+        }else{
+
+            System.out.print("""
+                        [1]-Atacar
+                        [2]-Movimentar
+                        [3]-Defender
+                        [4]-Ataque Aéreo
+                        [5]-Suporte
+                        [6]-Passar a vez
+                        O que deseja fazer"""+" "+jogadorAtuando.getLado()+": ");
+            opcao= sc.nextInt();
+            switch (opcao){
+                case 1:
+                    this.atacar(jogadorAtuando);
+                    break;
+                case 2:
+                    this.movimentar(jogadorAtuando);
+                    break;
+                case 3:
+                    jogadorAtuando.setUnidadeDefendida(this.defender(jogadorAtuando));
+                    if(jogadorAtuando.isJogadorDefendeu()){
+                        jogadorAtuando.setValorDefesaInit(jogadorAtuando.getUnidadeDefendida().getDefesa());
+                        jogadorAtuando.getUnidadeDefendida().addDefesa(50);
+                    }
+                    break;
+                case 4:
+                    this.aviao(jogadorAtuando);
+                    break;
+                case 5:
+                    this.suporte(jogadorAtuando);
+                    break;
+                case 6:
+                    jogadorAtuando.setAcoes(3);
+                    break;
+            }
         }
+    }
+
+    private void suporte(Jogador jogadorAtuando) {
+        ArrayList<Posicao> posicaos=this.unidadesJogador(jogadorAtuando.getLado());
+        ArrayList<Posicao> uparDano= new ArrayList<>();
+        for (Posicao posicao:posicaos) {
+            if (posicao.getUnidade() instanceof Suporte){
+                if((posicaos.indexOf(posicao)+1)%4==0 &&
+                        posicaos.indexOf(posicao)!=0){
+                    System.out.print("["+(posicaos.indexOf(posicao)+1)+"]"+posicao.getUnidade()+"\n");
+                }else{
+                    System.out.print("["+(posicaos.indexOf(posicao)+1)+"]"+posicao.getUnidade());
+                }
+            }
+        }
+
+        System.out.println("Indique qual unidade deseja usar: ");
+        int posicaoNoArray= sc.nextInt();
+        Unidade unidadeUsada=posicaos.get(posicaoNoArray-1).getUnidade();
+        if (unidadeUsada instanceof Suporte){
+            uparDano=((Suporte) unidadeUsada).upDano(this.campoDeBatalha,posicaos.get(posicaoNoArray-1));
+        }
+        for(Posicao posicao:uparDano){
+            System.out.println("["+(uparDano.indexOf(posicao)+1)+"] - "+posicao.getUnidade());
+        }
+        System.out.println("Indique qual unidade deseja Bufar: ");
+        int posicaoABufar= sc.nextInt();
+        jogadorAtuando.setUnidadeBufada(uparDano.get(posicaoABufar-1).getUnidade());
+        jogadorAtuando.setValorDeDanoInit(jogadorAtuando.getUnidadeBufada().getDano());
+        jogadorAtuando.getUnidadeBufada().addDano(50);
+        jogadorAtuando.setJogadorUsouSuporte(true);
     }
 
 }

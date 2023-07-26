@@ -87,7 +87,7 @@ public class Suporte extends Unidade {
             }
         }
 
-        return null;
+        return upsPossiveis;
     }
     @Override
     public String toString() {

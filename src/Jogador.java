@@ -3,10 +3,12 @@ public class Jogador {
     private Unidade unidadeDefendida;
     private int valorDefesaInit;
     private Unidade unidadeBufada;
+    private int valorDeDanoInit;
     private int acoes=0;
     private boolean jogadorUsouSniper=false;
     private boolean jogadorUsouSuporte=false;
-    private boolean jogadorUsouAviao=false;
+    private boolean jogadorUsouAviao=true;
+            ;
     private boolean jogadorDefendeu=false;
 
     Jogador(String lado){
@@ -52,7 +54,7 @@ public class Jogador {
         return jogadorUsouSuporte;
     }
 
-    public boolean isJogadorUsouAvião() {
+    public boolean isJogadorUsouAviao() {
         return jogadorUsouAviao;
     }
 
@@ -72,7 +74,7 @@ public class Jogador {
         this.jogadorUsouSuporte = jogadorUsouSuporte;
     }
 
-    public void setJogadorUsouAvião(boolean jogadorUsouAvião) {
+    public void setJogadorUsouAviao(boolean jogadorUsouAviao) {
         this.jogadorUsouAviao = jogadorUsouAviao;
     }
 
@@ -86,5 +88,13 @@ public class Jogador {
 
     public void setValorDefesaInit(int valorDefesaInit) {
         this.valorDefesaInit = valorDefesaInit;
+    }
+
+    public int getValorDeDanoInit() {
+        return valorDeDanoInit;
+    }
+
+    public void setValorDeDanoInit(int valorDeDanoInit) {
+        this.valorDeDanoInit = valorDeDanoInit;
     }
 }

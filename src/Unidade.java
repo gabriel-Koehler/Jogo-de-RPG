@@ -45,6 +45,13 @@ public abstract class Unidade {
             this.defesa += defesa;
         }
     }
+    public void addDefesa(int defesaBonus){
+        this.defesa+=defesaBonus;
+    }
+
+    public void addDano(int danoBonus){
+        this.dano+=danoBonus;
+    }
 
     public String getLado() {
         return lado;
