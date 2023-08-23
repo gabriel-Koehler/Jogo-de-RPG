@@ -8,6 +8,15 @@ public class Partida {
     private CampoDeBatalha campoDeBatalha;
     private Posicao[][] campo;
 
+    private int contTiroJ2=0;
+    private int contTiroJ1=0;
+    private int contAviaoJ1=0;
+    private int contAviaoJ2=0;
+    private int contDefendeuJ1=0;
+    private int contDefendeuJ2=0;
+    private int contSuporteJ2=0;
+    private int contSuporteJ1=0;
+
     Partida(){
         this.campoDeBatalha=new CampoDeBatalha();
         this.campo=campoDeBatalha.getPosicao() ;
@@ -84,12 +93,14 @@ public class Partida {
                 contTiroJ1=0;
                 jogador1.setJogadorUsouSniper(false);
             }
+
             if(jogador2.isJogadorUsouSniper() && contTiroJ2!=2){
                 contTiroJ2++;
             }else if(jogador2.isJogadorUsouSniper() && contTiroJ2==2){
                 contTiroJ2=0;
                 jogador2.setJogadorUsouSniper(false);
             }
+
             if(jogador1.isJogadorDefendeu() && contDefendeuJ1!=2){
                 contDefendeuJ1++;
             }else if(jogador1.isJogadorDefendeu() && contDefendeuJ1==2){
@@ -99,6 +110,7 @@ public class Partida {
                 }
                 jogador1.setJogadorDefendeu(false);
             }
+
             if(jogador2.isJogadorDefendeu() && contDefendeuJ2!=2){
                 contDefendeuJ2++;
             }else if(jogador2.isJogadorDefendeu() && contDefendeuJ2==2){
@@ -108,12 +120,14 @@ public class Partida {
                 }
                 jogador2.setJogadorDefendeu(false);
             }
+
             if(jogador1.isJogadorUsouAviao() && contAviaoJ1!=5){
                 contAviaoJ1++;
             } else if (jogador1.isJogadorUsouAviao() && contAviaoJ1==5) {
                 contAviaoJ1=0;
                 jogador1.setJogadorUsouAviao(false);
             }
+
             if(jogador2.isJogadorUsouAviao() && contAviaoJ2!=5){
                 contAviaoJ2++;
             } else if (jogador2.isJogadorUsouAviao() && contAviaoJ2==5) {
@@ -127,12 +141,14 @@ public class Partida {
                 contSuporteJ1=0;
                 jogador1.setJogadorUsouSuporte(false);
             }
+
             if (jogador2.isJogadorUsouSuporte() && contSuporteJ2!=2){
                 contSuporteJ2++;
             }else if (jogador2.isJogadorUsouSuporte() && contSuporteJ2==2){
                 contSuporteJ2=0;
                 jogador2.setJogadorUsouSuporte(false);
             }
+
             do {
 
                 display_De_Acoes(jogador1);
@@ -146,6 +162,15 @@ public class Partida {
             }while (jogador2.getAcoes()<3);
 
         }while (this.calcVidaTotalJogadores());
+    }
+
+    private void verificaUsoSniper(){
+        if(jogador1.isJogadorUsouSniper() && contTiroJ1!=2){
+            contTiroJ1++;
+        }else if(jogador1.isJogadorUsouSniper() && contTiroJ1==2){
+            contTiroJ1=0;
+            jogador1.setJogadorUsouSniper(false);
+        }
     }
 
     public void movimentar(Jogador jogadorAtuando){

@@ -5,14 +5,65 @@ public class Jogador {
     private Unidade unidadeBufada;
     private int valorDeDanoInit;
     private int acoes=0;
+    private int countAviao;
+    private int countTiro;
+    private int countDefendeu;
+    private int countSuporte;
     private boolean jogadorUsouSniper=false;
     private boolean jogadorUsouSuporte=false;
     private boolean jogadorUsouAviao=true;
-            ;
     private boolean jogadorDefendeu=false;
 
     Jogador(String lado){
         this.lado=lado;
+    }
+
+    public int getCountAviao() {
+        return countAviao;
+    }
+
+    public void setCountAviao(int countAviao) {
+        this.countAviao = countAviao;
+    }
+
+    public void addCountAviao() {
+        this.countAviao++;
+    }
+
+    public int getCountTiro() {
+        return countTiro;
+    }
+
+    public void setCountTiro(int countTiro) {
+        this.countTiro = countTiro;
+    }
+
+    public void addCountTiro() {
+        this.countTiro++;
+    }
+
+    public int getCountDefendeu() {
+        return countDefendeu;
+    }
+
+    public void setCountDefendeu(int countDefendeu) {
+        this.countDefendeu = countDefendeu;
+    }
+
+    public void addCountDefendeu() {
+        this.countDefendeu++;
+    }
+
+    public int getCountSuporte() {
+        return countSuporte;
+    }
+
+    public void setCountSuporte(int countSuporte) {
+        this.countSuporte = countSuporte;
+    }
+
+    public void addCountSuporte() {
+        this.countSuporte++;
     }
 
     public String getLado() {
