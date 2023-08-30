@@ -5,65 +5,32 @@ public class Jogador {
     private Unidade unidadeBufada;
     private int valorDeDanoInit;
     private int acoes=0;
-    private int countAviao;
-    private int countTiro;
-    private int countDefendeu;
-    private int countSuporte;
-    private boolean jogadorUsouSniper=false;
-    private boolean jogadorUsouSuporte=false;
-    private boolean jogadorUsouAviao=true;
-    private boolean jogadorDefendeu=false;
+    private int resfriamentoFrancoAtirador;
+    private int resfriamentoAviao;
+    private int resfriamentoSuporte;
+    private int resfriamentoDefesa;
+//    private boolean jogadorUsouSuporte=false;
+//    private boolean jogadorUsouAviao=true;
+//    private boolean jogadorDefendeu=false;
 
     Jogador(String lado){
         this.lado=lado;
     }
 
-    public int getCountAviao() {
-        return countAviao;
+    public int getResfriamentoAviao() {
+        return resfriamentoAviao;
     }
 
-    public void setCountAviao(int countAviao) {
-        this.countAviao = countAviao;
+    public int getResfriamentoFrancoAtirador() {
+        return resfriamentoFrancoAtirador;
     }
 
-    public void addCountAviao() {
-        this.countAviao++;
+    public void setResfriamentoFrancoAtirador(int resfriamentoFrancoAtirador) {
+        this.resfriamentoFrancoAtirador = resfriamentoFrancoAtirador;
     }
 
-    public int getCountTiro() {
-        return countTiro;
-    }
-
-    public void setCountTiro(int countTiro) {
-        this.countTiro = countTiro;
-    }
-
-    public void addCountTiro() {
-        this.countTiro++;
-    }
-
-    public int getCountDefendeu() {
-        return countDefendeu;
-    }
-
-    public void setCountDefendeu(int countDefendeu) {
-        this.countDefendeu = countDefendeu;
-    }
-
-    public void addCountDefendeu() {
-        this.countDefendeu++;
-    }
-
-    public int getCountSuporte() {
-        return countSuporte;
-    }
-
-    public void setCountSuporte(int countSuporte) {
-        this.countSuporte = countSuporte;
-    }
-
-    public void addCountSuporte() {
-        this.countSuporte++;
+    public int getResfriamentoSuporte() {
+        return resfriamentoSuporte;
     }
 
     public String getLado() {
@@ -93,45 +60,38 @@ public class Jogador {
     public void setAcoes(int acoes) {
         this.acoes = acoes;
     }
+
     public void addAcoes(int acoes) {
         this.acoes += acoes;
     }
 
-    public boolean isJogadorUsouSniper() {
-        return jogadorUsouSniper;
-    }
-
-    public boolean isJogadorUsouSuporte() {
-        return jogadorUsouSuporte;
-    }
-
-    public boolean isJogadorUsouAviao() {
-        return jogadorUsouAviao;
-    }
-
-    public boolean isJogadorDefendeu() {
-        return jogadorDefendeu;
-    }
+//    public boolean isJogadorUsouSuporte() {
+//        return jogadorUsouSuporte;
+//    }
+//
+//    public boolean isJogadorUsouAviao() {
+//        return jogadorUsouAviao;
+//    }
+//
+//    public boolean isJogadorDefendeu() {
+//        return jogadorDefendeu;
+//    }
 
     public void setLado(String lado) {
         this.lado = lado;
     }
 
-    public void setJogadorUsouSniper(boolean jogadorUsouSniper) {
-        this.jogadorUsouSniper = jogadorUsouSniper;
-    }
-
-    public void setJogadorUsouSuporte(boolean jogadorUsouSuporte) {
-        this.jogadorUsouSuporte = jogadorUsouSuporte;
-    }
-
-    public void setJogadorUsouAviao(boolean jogadorUsouAviao) {
-        this.jogadorUsouAviao = jogadorUsouAviao;
-    }
-
-    public void setJogadorDefendeu(boolean jogadorDefendeu) {
-        this.jogadorDefendeu = jogadorDefendeu;
-    }
+//    public void setJogadorUsouSuporte(boolean jogadorUsouSuporte) {
+//        this.jogadorUsouSuporte = jogadorUsouSuporte;
+//    }
+//
+//    public void setJogadorUsouAviao(boolean jogadorUsouAviao) {
+//        this.jogadorUsouAviao = jogadorUsouAviao;
+//    }
+//
+//    public void setJogadorDefendeu(boolean jogadorDefendeu) {
+//        this.jogadorDefendeu = jogadorDefendeu;
+//    }
 
     public int getValorDefesaInit() {
         return valorDefesaInit;
@@ -149,5 +109,49 @@ public class Jogador {
         this.valorDeDanoInit = valorDeDanoInit;
     }
 
+    public boolean suporte(Unidade unidadeABufar){
+        if(resfriamentoSuporte==0){
+            this.setUnidadeBufada(unidadeABufar);
+
+            this.setValorDeDanoInit(unidadeABufar.getDano());
+
+            this.getUnidadeBufada().addDano(50);
+            return true;
+        }
+        return false;
+
+    }
+
+    public boolean defender(Unidade unidadeDefendida){
+        if(resfriamentoDefesa==0){
+            this.setUnidadeDefendida(unidadeDefendida);
+            this.setValorDefesaInit(this.getUnidadeDefendida().getDefesa());
+            this.getUnidadeDefendida().addDefesa(50);
+            return true;
+        }
+        return false;
+
+    }
+    public boolean aviao(Posicao[][] campo,Posicao posicaoAtacada){
+        if(getResfriamentoAviao()==0){
+            int x = posicaoAtacada.getPosicaoNoCampoDeBatalhaX();
+            int y = posicaoAtacada.getPosicaoNoCampoDeBatalhaY();
+
+            for (int i = y - 1; i < y + 1; i++) {
+                for (int j = x - 1; j < x + 1; j++) {
+                    if ((i < 12 && i > -1) && (j < 8 && j > -1)) {
+                        if (campo[i][j].getUnidade() != null) {
+                            if (campo[i][j].getUnidade().getLado().equals(lado)) {
+                                campo[i][j].getUnidade().setDefesa(-70);
+                            }
+                        }
+                    }
+                }
+            }
+            this.resfriamentoAviao=2;
+            return true;
+        }
+        return false;
+    }
 
 }

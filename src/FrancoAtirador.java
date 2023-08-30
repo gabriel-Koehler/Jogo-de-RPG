@@ -4,17 +4,16 @@ import java.util.List;
 
 public class FrancoAtirador extends Unidade{
 
-    static int tempoDeResfriamento=0;
 
     FrancoAtirador(String lado){
         super(150,100,100, lado);
     }
 
     @Override
-    public boolean atacar(Posicao posicaoAtacada){
-        if(tempoDeResfriamento==0){
-            super.atacar(posicaoAtacada);
-            tempoDeResfriamento=2;
+    public boolean atacar(Posicao posicaoAtacada,Jogador jogador){
+        if(jogador.getResfriamentoFrancoAtirador()==0){
+            super.atacar(posicaoAtacada,jogador);
+            jogador.setResfriamentoFrancoAtirador(2);
             return true;
         }
         return false;
