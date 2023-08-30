@@ -15,6 +15,16 @@ public abstract class Unidade {
         this.defesa=defesa;
         this.vida=vida;
     }
+
+    public boolean atacar(Posicao posicaoAtacada){
+        Unidade atacada=posicaoAtacada.getUnidade();
+        atacada.setDefesa(-(getDano()));
+        if(atacada.getVida()<=0){
+            posicaoAtacada.setUnidade(null);
+        }
+        return true;
+    }
+
     public abstract ArrayList<Posicao> movimentos(CampoDeBatalha campoDeBatalha, Posicao posicaoAtual);
     public abstract  ArrayList<Posicao> ataques(CampoDeBatalha campoDeBatalha, Posicao posicaoAtual);
 

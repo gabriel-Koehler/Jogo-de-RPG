@@ -148,4 +148,6 @@ public class Jogador {
     public void setValorDeDanoInit(int valorDeDanoInit) {
         this.valorDeDanoInit = valorDeDanoInit;
     }
+
+
 }

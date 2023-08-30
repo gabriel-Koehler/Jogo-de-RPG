@@ -14,38 +14,15 @@ public class Suporte extends Unidade {
         int x=posicaoAtual.getPosicaoNoCampoDeBatalhaX();
         int y=posicaoAtual.getPosicaoNoCampoDeBatalhaY();
 
-//        ---> x x x
-//        cima x u x
-//             x x x
-        if((y-1)>-1 && campo[y-1][x].getUnidade()==null ){
-            movimentosPossiveis.add(campo[y-1][x]);
-        }
-        if(((y-1)>-1 && (x-1)>-1) &&  campo[y-1][x-1].getUnidade()==null){
-            movimentosPossiveis.add(campo[y-1][x-1]);
-        }
-        if(((y-1)>-1 && (x+1)<8) && campo[y-1][x+1].getUnidade()==null){
-            movimentosPossiveis.add(campo[y-1][x+1]);
-        }
-//        meio x x x
-//         --->x u x
-//             x x x
-        if((x-1)>-1 && campo[y][x-1].getUnidade()==null){
-            movimentosPossiveis.add(campo[y][x-1]);
-        }
-        if((x+1)<8 && campo[y][x+1].getUnidade()==null){
-            movimentosPossiveis.add(campo[y][x+1]);
-        }
-//             x x x
-//       baixo x u x
-//         --->x x x
-        if((y+1)<12 && campo[y+1][x].getUnidade()==null){
-            movimentosPossiveis.add(campo[y+1][x]);
-        }
-        if(((y+1)<12 && (x-1)>-1) && campo[y+1][x-1].getUnidade()==null){
-            movimentosPossiveis.add(campo[y+1][x-1]);
-        }
-        if(((y+1)<12 && (x+1)<8) && campo[y+1][x+1].getUnidade()==null){
-            movimentosPossiveis.add(campo[y+1][x+1]);
+        for (int i=y-1;i<=y+1;i++){
+            System.out.println("i "+i);
+            for (int j = y-1; j <=y+1; j++){
+                System.out.println("j "+j);
+                if((i>-1 && j>-1) && (j<8 && i<12)
+                        && campo[i][j].getUnidade()==null){
+                    movimentosPossiveis.add(campo[i][j]);
+                }
+            }
         }
         return movimentosPossiveis;
     }

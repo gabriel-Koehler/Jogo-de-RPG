@@ -8,6 +8,9 @@ public class Partida {
     private CampoDeBatalha campoDeBatalha;
     private Posicao[][] campo;
 
+    private ArrayList<Jogador> jogadores=new ArrayList<>();
+    private int rodada;
+
     private int contTiroJ2=0;
     private int contTiroJ1=0;
     private int contAviaoJ1=0;
@@ -20,7 +23,16 @@ public class Partida {
     Partida(){
         this.campoDeBatalha=new CampoDeBatalha();
         this.campo=campoDeBatalha.getPosicao() ;
+        this.rodada=0;
     }
+
+    public Jogador getJogadorAtivo(){
+        return this.jogadores.get(rodada%2);
+    }
+    public Jogador getJogadorAdversario(){
+        return this.jogadores.get((rodada+1)%2);
+    }
+
     private void mostrarTabuleiro(){
         for(int i=0;i<12;i++){
               for(int j=0;j<8;j++){
@@ -75,30 +87,25 @@ public class Partida {
     public void jogar(){
 
         int contTiroJ1=0;
-        int contTiroJ2=0;
+
         int contAviaoJ1=0;
-        int contAviaoJ2=0;
+
         int contDefendeuJ1=0;
-        int contDefendeuJ2=0;
+
         int contSuporteJ1=0;
-        int contSuporteJ2=0;
+
 
         do {
 
+            jogador1=getJogadorAtivo();
+
             jogador1.setAcoes(0);
-            jogador2.setAcoes(0);
+
             if(jogador1.isJogadorUsouSniper() && contTiroJ1!=2){
                 contTiroJ1++;
             }else if(jogador1.isJogadorUsouSniper() && contTiroJ1==2){
                 contTiroJ1=0;
                 jogador1.setJogadorUsouSniper(false);
-            }
-
-            if(jogador2.isJogadorUsouSniper() && contTiroJ2!=2){
-                contTiroJ2++;
-            }else if(jogador2.isJogadorUsouSniper() && contTiroJ2==2){
-                contTiroJ2=0;
-                jogador2.setJogadorUsouSniper(false);
             }
 
             if(jogador1.isJogadorDefendeu() && contDefendeuJ1!=2){
@@ -111,28 +118,11 @@ public class Partida {
                 jogador1.setJogadorDefendeu(false);
             }
 
-            if(jogador2.isJogadorDefendeu() && contDefendeuJ2!=2){
-                contDefendeuJ2++;
-            }else if(jogador2.isJogadorDefendeu() && contDefendeuJ2==2){
-                contDefendeuJ2=0;
-                if(jogador2.getValorDefesaInit()==jogador2.getUnidadeDefendida().getDefesa()){
-                    jogador2.getUnidadeDefendida().setDefesa(-50);
-                }
-                jogador2.setJogadorDefendeu(false);
-            }
-
             if(jogador1.isJogadorUsouAviao() && contAviaoJ1!=5){
                 contAviaoJ1++;
             } else if (jogador1.isJogadorUsouAviao() && contAviaoJ1==5) {
                 contAviaoJ1=0;
                 jogador1.setJogadorUsouAviao(false);
-            }
-
-            if(jogador2.isJogadorUsouAviao() && contAviaoJ2!=5){
-                contAviaoJ2++;
-            } else if (jogador2.isJogadorUsouAviao() && contAviaoJ2==5) {
-                contAviaoJ2=0;
-                jogador2.setJogadorUsouAviao(false);
             }
 
             if (jogador1.isJogadorUsouSuporte() && contSuporteJ1!=2){
@@ -142,36 +132,18 @@ public class Partida {
                 jogador1.setJogadorUsouSuporte(false);
             }
 
-            if (jogador2.isJogadorUsouSuporte() && contSuporteJ2!=2){
-                contSuporteJ2++;
-            }else if (jogador2.isJogadorUsouSuporte() && contSuporteJ2==2){
-                contSuporteJ2=0;
-                jogador2.setJogadorUsouSuporte(false);
-            }
+
 
             do {
-
                 display_De_Acoes(jogador1);
 
             }while (jogador1.getAcoes()<3);
 
-            do {
 
-                display_De_Acoes(jogador2);
 
-            }while (jogador2.getAcoes()<3);
-
-        }while (this.calcVidaTotalJogadores());
+        }while (!this.validarVitoria());
     }
 
-    private void verificaUsoSniper(){
-        if(jogador1.isJogadorUsouSniper() && contTiroJ1!=2){
-            contTiroJ1++;
-        }else if(jogador1.isJogadorUsouSniper() && contTiroJ1==2){
-            contTiroJ1=0;
-            jogador1.setJogadorUsouSniper(false);
-        }
-    }
 
     public void movimentar(Jogador jogadorAtuando){
         ArrayList<Posicao> posicaos=this.unidadesJogador(jogadorAtuando.getLado());
@@ -210,33 +182,32 @@ public class Partida {
         }
     }
 
-    public void atacar(Jogador jogadorAtuando){
+    public void atacar(){
 
-        ArrayList<Posicao> posicaos=this.unidadesJogador(jogadorAtuando.getLado());
-        for (Posicao posicao:posicaos) {
+        ArrayList<Posicao> posicoes=this.unidadesJogador(getJogadorAtivo().getLado());
 
-            if((posicaos.indexOf(posicao)+1)%4==0 &&
-                    posicaos.indexOf(posicao)!=0){
-                System.out.print("["+(posicaos.indexOf(posicao)+1)+"]"+posicao.getUnidade()+"\n");
-            }else{
-                System.out.print("["+(posicaos.indexOf(posicao)+1)+"]"+posicao.getUnidade());
+        Posicao posicaoUnidadeAtuando=selecionaPosicao(posicoes);
+        posicoes=posicaoUnidadeAtuando.getUnidade().ataques(campoDeBatalha,posicaoUnidadeAtuando);
+        Posicao posicaoUnidadeAtacada=selecionaPosicao(posicoes);
+        posicaoUnidadeAtuando.getUnidade().atacar(posicaoUnidadeAtacada);
+
+        getJogadorAtivo().addAcoes(3);
+        
+
+    }
+    private Posicao selecionaPosicao(ArrayList<Posicao> posicaos){
+
+            for(Posicao posicao:posicaos){
+                System.out.println("["+(posicaos.indexOf(posicao)+1)+"] - "+posicao.getUnidade());
             }
 
-        }
+            System.out.println("Indique qual unidade deseja selecionar: ");
+            int posicaoAAtacar= sc.nextInt();
+            Posicao posicao=posicaos.get(posicaoAAtacar-1);
 
-        System.out.println("Indique qual unidade deseja usar: ");
-        int posicaoNoArray= sc.nextInt();
-        Unidade unidadeUsada=posicaos.get(posicaoNoArray-1).getUnidade();
 
-        if(unidadeUsada instanceof FrancoAtirador){
-           if(jogadorAtuando.isJogadorUsouSniper()){
-               System.out.println("infelizmente o Franco atirador não pode ser usado");
-           }else if(!jogadorAtuando.isJogadorUsouSniper()){
-               funcao_De_Ataque(jogadorAtuando,unidadeUsada,posicaoNoArray,posicaos);
-           }
-        }else {
-            funcao_De_Ataque(jogadorAtuando,unidadeUsada,posicaoNoArray,posicaos);
-        }
+
+        return posicao;
     }
 
     public Unidade defender(Jogador jogadorAtuando){
@@ -297,62 +268,22 @@ public class Partida {
         }
         jogadorAtuando.setJogadorUsouAviao(true);
     }
-    private boolean calcVidaTotalJogadores (){
-
+    private boolean validarVitoria(){
+//validarVitoria
         int vidaTotalJ1=0;
-        int vidaTotalJ2=0;
-        ArrayList<Unidade> unidadesJ1=new ArrayList();
 
-        for(Posicao posicao:this.unidadesJogador(this.jogador1.getLado())){
-            unidadesJ1.add(posicao.getUnidade());
-        }
-        for(Unidade unidade:unidadesJ1){
-            vidaTotalJ1+=unidade.getVida();
-        }
-        ArrayList<Unidade> unidadesJ2=new ArrayList();
-        for(Posicao posicao:this.unidadesJogador(this.jogador2.getLado())){
-            unidadesJ2.add(posicao.getUnidade());
-        }
-        for(Unidade unidade:unidadesJ2){
-            vidaTotalJ2+=unidade.getVida();
+        for(Posicao posicao:this.unidadesJogador(getJogadorAdversario().getLado())){
+            vidaTotalJ1+=posicao.getUnidade().getVida();
         }
 
-        if(vidaTotalJ1<600 || vidaTotalJ2<600){
-            return false;
+
+        if(vidaTotalJ1<600){
+            return true;
         }
-        return true;
+        rodada++;
+        return false;
     }
 
-    private void funcao_De_Ataque(Jogador jogadorAtuando,
-                                  Unidade unidadeUsada,
-                                  int posicaoNoArray,
-                                  ArrayList<Posicao> posicaos){
-        ArrayList<Posicao> ataques=unidadeUsada
-                .ataques(this.campoDeBatalha,posicaos.get(posicaoNoArray-1));
-        System.out.println(ataques);
-
-        if(ataques.size()!=0){
-            for(Posicao posicao:ataques){
-                System.out.println("["+(ataques.indexOf(posicao)+1)+"] - "+posicao.getUnidade());
-            }
-
-            System.out.println("Indique qual unidade deseja Atacar: ");
-            int posicaoAAtacar= sc.nextInt();
-            Unidade unidadeAtacada=ataques.get(posicaoAAtacar-1).getUnidade();
-            unidadeAtacada.setDefesa(-(unidadeUsada.getDano()));
-            System.out.println(unidadeAtacada.getDefesa()+"\n"+unidadeAtacada.getVida());
-            if(unidadeAtacada.getVida()<=0){
-                ataques.get(posicaoAAtacar-1).setUnidade(null);
-            }
-            if(unidadeUsada instanceof  FrancoAtirador){
-                jogadorAtuando.setJogadorUsouSniper(true);
-            }
-            jogadorAtuando.addAcoes(2);
-
-        }else{
-            System.out.println("Sem possibilidades de ataque");
-        }
-    }
 
     private void display_De_Acoes(Jogador jogadorAtuando){
         mostrarTabuleiro();
@@ -368,7 +299,7 @@ public class Partida {
             opcao= sc.nextInt();
             switch (opcao){
                 case 1:
-                    this.atacar(jogadorAtuando);
+                    this.atacar();
                     break;
                 case 2:
                     this.movimentar(jogadorAtuando);
@@ -397,7 +328,7 @@ public class Partida {
             opcao= sc.nextInt();
             switch (opcao){
                 case 1:
-                    this.atacar(jogadorAtuando);
+                    this.atacar();
                     break;
                 case 2:
                     this.movimentar(jogadorAtuando);
@@ -429,7 +360,7 @@ public class Partida {
             opcao= sc.nextInt();
             switch (opcao){
                 case 1:
-                    this.atacar(jogadorAtuando);
+                    this.atacar();
                     break;
                 case 2:
                     this.movimentar(jogadorAtuando);
@@ -462,7 +393,7 @@ public class Partida {
             opcao= sc.nextInt();
             switch (opcao){
                 case 1:
-                    this.atacar(jogadorAtuando);
+                    this.atacar();
                     break;
                 case 2:
                     this.movimentar(jogadorAtuando);
