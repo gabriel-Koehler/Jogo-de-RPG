@@ -10,10 +10,10 @@ public class FrancoAtirador extends Unidade{
     }
 
     @Override
-    public boolean atacar(Posicao posicaoAtacada,Jogador jogador){
+    public boolean atacar(Posicao posicaoAtacada,Jogador jogador,int rodada){
         if(jogador.getResfriamentoFrancoAtirador()==0){
-            super.atacar(posicaoAtacada,jogador);
-            jogador.setResfriamentoFrancoAtirador(2);
+            super.atacar(posicaoAtacada,jogador,rodada);
+            jogador.setResfriamentoFrancoAtirador(rodada+4);
             return true;
         }
         return false;

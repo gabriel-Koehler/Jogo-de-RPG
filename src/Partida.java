@@ -85,36 +85,13 @@ public class Partida {
 
     public void jogar() {
 
-        int contAviaoJ1 = 0;
-
-        int contDefendeuJ1 = 0;
-
-        int contSuporteJ1 = 0;
-
-
         do {
 
             jogador1 = getJogadorAtivo();
 
             jogador1.setAcoes(0);
 
-            if (jogador1.isJogadorDefendeu() && contDefendeuJ1 != 2) {
-                contDefendeuJ1++;
-            } else if (jogador1.isJogadorDefendeu() && contDefendeuJ1 == 2) {
-                contDefendeuJ1 = 0;
-                if (jogador1.getValorDefesaInit() == jogador1.getUnidadeDefendida().getDefesa()) {
-                    jogador1.getUnidadeDefendida().setDefesa(-50);
-                }
-                jogador1.setJogadorDefendeu(false);
-            }
-
-            if (jogador1.isJogadorUsouAviao() && contAviaoJ1 != 5) {
-                contAviaoJ1++;
-            } else if (jogador1.isJogadorUsouAviao() && contAviaoJ1 == 5) {
-                contAviaoJ1 = 0;
-                jogador1.setJogadorUsouAviao(false);
-            }
-
+            validacoes();
 
             do {
                 display_De_Acoes();
@@ -124,7 +101,31 @@ public class Partida {
 
         } while (!this.validarVitoria());
     }
+    public void validacoes(){
 
+        if (getJogadorAtivo().getResfriamentoAviao()==rodada){
+            getJogadorAtivo().setResfriamentoAviao(0);
+        }
+        if(getJogadorAtivo().getResfriamentoFrancoAtirador()==rodada){
+            getJogadorAtivo().setResfriamentoFrancoAtirador(0);
+        }
+        if (getJogadorAtivo().getResfriamentoSuporte()==rodada
+                &&  getJogadorAtivo().getUnidadeBufada()!=null){
+            getJogadorAtivo().setUnidadeBufada(null);
+            getJogadorAtivo().getUnidadeBufada().removeDano();
+            getJogadorAtivo().setResfriamentoSuporte(0);
+        }
+        if(getJogadorAtivo().getResfriamentoDefesa()==rodada
+                && getJogadorAtivo().getUnidadeDefendida()!=null){
+            if(getJogadorAtivo().getValorDefesaInit() ==
+                    getJogadorAtivo().getUnidadeDefendida().getDefesa()){
+                getJogadorAtivo().getUnidadeDefendida().setDefesa(-50);
+                getJogadorAtivo().setUnidadeDefendida(null);
+                getJogadorAtivo().setValorDefesaInit(0);
+                getJogadorAtivo().setResfriamentoDefesa(0);
+            }
+        }
+    }
 
     public void movimentar() {
         ArrayList<Posicao> posicaos = this.unidadesJogador(getJogadorAtivo().getLado());
@@ -138,7 +139,6 @@ public class Partida {
         Posicao posicaoAMovimentar = selecionaPosicao(movimentos);
 
         posicaoUnidadeAtuando.getUnidade().movimentar(posicaoAMovimentar, posicaoUnidadeAtuando);
-        getJogadorAtivo().addAcoes(1);
 
     }
 
@@ -149,7 +149,7 @@ public class Partida {
         Posicao posicaoUnidadeAtuando = selecionaPosicao(posicoes);
         posicoes = posicaoUnidadeAtuando.getUnidade().ataques(campoDeBatalha, posicaoUnidadeAtuando);
         Posicao posicaoUnidadeAtacada = selecionaPosicao(posicoes);
-        return posicaoUnidadeAtuando.getUnidade().atacar(posicaoUnidadeAtacada, getJogadorAtivo());
+        return posicaoUnidadeAtuando.getUnidade().atacar(posicaoUnidadeAtacada, getJogadorAtivo(),rodada);
 
     }
 
@@ -171,7 +171,7 @@ public class Partida {
 
         ArrayList<Posicao> posicaos = this.unidadesJogador(getJogadorAtivo().getLado());
         Posicao posicaoUnidadeDefendida = selecionaPosicao(posicaos);
-        return getJogadorAtivo().defender(posicaoUnidadeDefendida.getUnidade());
+        return getJogadorAtivo().defender(posicaoUnidadeDefendida.getUnidade(),this.rodada);
 
     }
 
@@ -187,7 +187,7 @@ public class Partida {
         }
 
         Posicao posicaoUnidadeAtacada = selecionaPosicao(locaisAtaque);
-        return getJogadorAtivo().aviao(campo,posicaoUnidadeAtacada);
+        return getJogadorAtivo().aviao(campo,posicaoUnidadeAtacada,this.rodada);
 
     }
 
@@ -199,10 +199,11 @@ public class Partida {
             vidaTotalJ1 += posicao.getUnidade().getVida();
         }
 
-
         if (vidaTotalJ1 < 600) {
             return true;
         }
+
+
         rodada++;
         return false;
     }
@@ -271,7 +272,7 @@ public class Partida {
 
         Posicao posicaoABufar = selecionaPosicao(posicaos);
 
-        return getJogadorAtivo().suporte(posicaoABufar.getUnidade());
+        return getJogadorAtivo().suporte(posicaoABufar.getUnidade(),this.rodada);
     }
 
 }

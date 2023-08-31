@@ -8,7 +8,6 @@ public abstract class Unidade {
     // Aliados e Eixo
     private String lado;
 
-
     Unidade(int vida,int defesa,int dano,String lado){
         this.lado=lado;
         this.dano=dano;
@@ -16,7 +15,10 @@ public abstract class Unidade {
         this.vida=vida;
     }
 
-    public boolean atacar(Posicao posicaoAtacada,Jogador jogador){
+    public abstract  ArrayList<Posicao> ataques(CampoDeBatalha campoDeBatalha, Posicao posicaoAtual);
+    public abstract ArrayList<Posicao> movimentos(CampoDeBatalha campoDeBatalha, Posicao posicaoAtual);
+
+    public boolean atacar(Posicao posicaoAtacada,Jogador jogador,int rodada){
         Unidade atacada=posicaoAtacada.getUnidade();
         atacada.setDefesa(-(getDano()));
         if(atacada.getVida()<=0){
@@ -24,15 +26,13 @@ public abstract class Unidade {
         }
         return true;
     }
+
     public void movimentar(Posicao posicaoAMovimentar,Posicao posicaoUnidadeAtual){
 
         posicaoAMovimentar.setUnidade(this);
         posicaoUnidadeAtual.setUnidade(null);
 
     }
-
-    public abstract ArrayList<Posicao> movimentos(CampoDeBatalha campoDeBatalha, Posicao posicaoAtual);
-    public abstract  ArrayList<Posicao> ataques(CampoDeBatalha campoDeBatalha, Posicao posicaoAtual);
 
 //    public abstract void desviar();
 
@@ -63,6 +63,10 @@ public abstract class Unidade {
     }
     public void addDefesa(int defesaBonus){
         this.defesa+=defesaBonus;
+    }
+
+    public void removeDano() {
+        this.dano -=50;
     }
 
     public void addDano(int danoBonus){

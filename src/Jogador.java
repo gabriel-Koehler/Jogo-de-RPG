@@ -3,18 +3,30 @@ public class Jogador {
     private Unidade unidadeDefendida;
     private int valorDefesaInit;
     private Unidade unidadeBufada;
-    private int valorDeDanoInit;
     private int acoes=0;
-    private int resfriamentoFrancoAtirador;
-    private int resfriamentoAviao;
-    private int resfriamentoSuporte;
-    private int resfriamentoDefesa;
-//    private boolean jogadorUsouSuporte=false;
-//    private boolean jogadorUsouAviao=true;
-//    private boolean jogadorDefendeu=false;
+    private int resfriamentoFrancoAtirador=0;
+    private int resfriamentoAviao=10;
+    private int resfriamentoSuporte=0;
+    private int resfriamentoDefesa=0;
 
     Jogador(String lado){
         this.lado=lado;
+    }
+
+    public int getResfriamentoDefesa() {
+        return resfriamentoDefesa;
+    }
+
+    public void setResfriamentoAviao(int resfriamentoAviao) {
+        this.resfriamentoAviao = resfriamentoAviao;
+    }
+
+    public void setResfriamentoSuporte(int resfriamentoSuporte) {
+        this.resfriamentoSuporte = resfriamentoSuporte;
+    }
+
+    public void setResfriamentoDefesa(int resfriamentoDefesa) {
+        this.resfriamentoDefesa = resfriamentoDefesa;
     }
 
     public int getResfriamentoAviao() {
@@ -65,34 +77,6 @@ public class Jogador {
         this.acoes += acoes;
     }
 
-//    public boolean isJogadorUsouSuporte() {
-//        return jogadorUsouSuporte;
-//    }
-//
-//    public boolean isJogadorUsouAviao() {
-//        return jogadorUsouAviao;
-//    }
-//
-//    public boolean isJogadorDefendeu() {
-//        return jogadorDefendeu;
-//    }
-
-    public void setLado(String lado) {
-        this.lado = lado;
-    }
-
-//    public void setJogadorUsouSuporte(boolean jogadorUsouSuporte) {
-//        this.jogadorUsouSuporte = jogadorUsouSuporte;
-//    }
-//
-//    public void setJogadorUsouAviao(boolean jogadorUsouAviao) {
-//        this.jogadorUsouAviao = jogadorUsouAviao;
-//    }
-//
-//    public void setJogadorDefendeu(boolean jogadorDefendeu) {
-//        this.jogadorDefendeu = jogadorDefendeu;
-//    }
-
     public int getValorDefesaInit() {
         return valorDefesaInit;
     }
@@ -101,20 +85,9 @@ public class Jogador {
         this.valorDefesaInit = valorDefesaInit;
     }
 
-    public int getValorDeDanoInit() {
-        return valorDeDanoInit;
-    }
-
-    public void setValorDeDanoInit(int valorDeDanoInit) {
-        this.valorDeDanoInit = valorDeDanoInit;
-    }
-
-    public boolean suporte(Unidade unidadeABufar){
+    public boolean suporte(Unidade unidadeABufar,int rodada){
         if(resfriamentoSuporte==0){
             this.setUnidadeBufada(unidadeABufar);
-
-            this.setValorDeDanoInit(unidadeABufar.getDano());
-
             this.getUnidadeBufada().addDano(50);
             return true;
         }
@@ -122,17 +95,18 @@ public class Jogador {
 
     }
 
-    public boolean defender(Unidade unidadeDefendida){
+    public boolean defender(Unidade unidadeDefendida,int rodada){
         if(resfriamentoDefesa==0){
             this.setUnidadeDefendida(unidadeDefendida);
             this.setValorDefesaInit(this.getUnidadeDefendida().getDefesa());
             this.getUnidadeDefendida().addDefesa(50);
+            resfriamentoDefesa=rodada+4;
             return true;
         }
         return false;
 
     }
-    public boolean aviao(Posicao[][] campo,Posicao posicaoAtacada){
+    public boolean aviao(Posicao[][] campo,Posicao posicaoAtacada,int rodada){
         if(getResfriamentoAviao()==0){
             int x = posicaoAtacada.getPosicaoNoCampoDeBatalhaX();
             int y = posicaoAtacada.getPosicaoNoCampoDeBatalhaY();
@@ -148,7 +122,7 @@ public class Jogador {
                     }
                 }
             }
-            this.resfriamentoAviao=2;
+            this.resfriamentoAviao=rodada+10;
             return true;
         }
         return false;
