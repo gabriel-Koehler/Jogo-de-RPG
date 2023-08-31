@@ -14,7 +14,7 @@ public class Jogador {
     }
 
     public int getResfriamentoDefesa() {
-        return resfriamentoDefesa;
+        return  resfriamentoDefesa;
     }
 
     public void setResfriamentoAviao(int resfriamentoAviao) {

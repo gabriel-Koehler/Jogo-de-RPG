@@ -22,7 +22,7 @@ public class Tanque extends Unidade{
                 }
             }
         }
-        return movimentosPossiveis;
+        return  movimentosPossiveis;
     }
 
     @Override
